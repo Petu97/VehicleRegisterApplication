@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to register application</h1>
+</div>
+
+<table class="table">
+    <thead>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <h1>@Html.ActionLink("View vehicles", "Index", "Vehicle")</h1>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("View vehicle owners", "Details", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.ActionLink("Button that does literally nothing", "Delete")
+            </td>
+        </tr>
+    </tbody>
+</table>

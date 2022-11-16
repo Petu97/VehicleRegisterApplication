@@ -1,0 +1,31 @@
+﻿@model VehicleRegisterApplication.Models.Vehicle
+@{
+    ViewData["Title"] = "Vehicle with id of "; 
+}
+@*need some method if returntype is car/motorcycle/truck*@
+<p>Hello from our View Template!</p>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.id)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.vehicleBrand)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.vehicleModel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.lisencePlateNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.owner)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.numOfWheels)
+        </dd>
+    </dl>
+</div>

@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "brand": "Ford",
+    "model": "Fiesta",
+    "register": "GIP-822",
+    "vehicleOwner": "null",
+    "wheels": 4
+  },
+  {
+    "id": 1,
+    "brand": "Mazda",
+    "model": "RX7",
+    "register": "WAO-228",
+    "vehicleOwner": "some jerk",
+    "wheels": 4
+  },
+  {
+    "id": 22,
+    "brand": "BMW",
+    "model": "E6",
+    "register": "ROU-395",
+    "vehicleOwner": "Thommy",
+    "wheels": 4
+  },
+  {
+    "id": 22,
+    "brand": "11111",
+    "model": "22222",
+    "register": "33333",
+    "vehicleOwner": "321",
+    "wheels": 4
+  },
+  {
+    "id": 23,
+    "brand": "Peugeot",
+    "model": "Narsisti",
+    "register": "LJD-634",
+    "vehicleOwner": "Louis",
+    "wheels": 4
+  }
+]
