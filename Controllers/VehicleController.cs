@@ -25,6 +25,14 @@ namespace VehicleRegisterApplication.Controllers
             return View();
         }
 
+        [Route("Vehicle/DeleteVehicle")]
+        public async Task<IActionResult> DeleteVehicle(int id)
+        {
+            var result = await vehicleDataHandler.DeleteVehicle(id);
+            if (result) return View();
+            else return NotFound();
+        }
+
         [HttpGet]
         [Route("Vehicle/CreateCar")]
         public async Task<IActionResult> CreateCar()
@@ -94,7 +102,8 @@ namespace VehicleRegisterApplication.Controllers
             }
         }
 
-        //these next 3 methods could probably be implemented as one, but i prefer static addresses for each of them for easier access for the users
+        /* methods for printing out list of vehicles of type
+         * these next 3 methods could probably be implemented as one, but i prefer static addresses for each of them for easier access for the user*/
         [HttpGet]
         [Route("Vehicle/Cars")]
         public async Task<IActionResult> Cars() //returns list of cars to client
@@ -127,20 +136,20 @@ namespace VehicleRegisterApplication.Controllers
 
 
         [Route("Vehicle/VehicleInfo/{id?}")]
-        public async Task<IActionResult> VehicleInfo(int? _id) //searches and returns specific vehicledata to client. This method is obviously inefficient and dum because we're not working with a proper db.
+        public async Task<IActionResult> VehicleInfo(int? id) //searches and returns specific vehicledata to client. This method is obviously inefficient and dum because we're not working with a proper db.
         {
             List<Car>? carData = await vehicleDataHandler.GetCars(); //searches for vehicle with given id from car data
-            Car? car = carData.Find(veh => veh.id == _id);
+            Car? car = carData.Find(veh => veh.id == id);
             if (car is not null)
                 return View(car);
 
             List<Truck>? truckData = await vehicleDataHandler.GetTrucks(); //searches for vehicle with given id from truck data
-            Truck? truck = truckData.Find(veh => veh.id == _id);
+            Truck? truck = truckData.Find(veh => veh.id == id);
             if (truck is not null)
                 return View(truck);
 
             List<Motorcycle>? motorcycleData = await vehicleDataHandler.GetMotorcycles(); //searches for vehicle with given id from truck data
-            Motorcycle? motorcycle = motorcycleData.Find(veh => veh.id == _id);
+            Motorcycle? motorcycle = motorcycleData.Find(veh => veh.id == id);
             if (motorcycle is not null)
                 return View(motorcycle);
 
