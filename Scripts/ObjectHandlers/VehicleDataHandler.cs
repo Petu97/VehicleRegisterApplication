@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using VehicleRegisterApplication.Models;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace VehicleRegisterApplication.Scripts.ObjectHandlers
 {
@@ -22,6 +23,11 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
         public async Task<List<Truck>> GetTrucks() => JsonConvert.DeserializeObject<List<Truck>>(System.IO.File.ReadAllText(Data.truckJSONPath));
         public async Task<List<Motorcycle>> GetMotorcycles() => JsonConvert.DeserializeObject<List<Motorcycle>>(System.IO.File.ReadAllText(Data.motorcycleJSONPath));
 
+        //next 3 methods override vehicledata in datafiles. Used for modifying datafiles
+        private async Task SaveCarData(List<Car> carData) => File.WriteAllText(Data.carJSONPath, JsonConvert.SerializeObject(carData));
+        private async Task SaveTruckData(List<Truck> truckData) => File.WriteAllText(Data.truckJSONPath, JsonConvert.SerializeObject(truckData));
+        private async Task SaveMotorcycleData(List<Motorcycle> motorcycleData) => File.WriteAllText(Data.motorcycleJSONPath, JsonConvert.SerializeObject(motorcycleData));
+
 
         //Creates a new car and adds it to datafile. Returns true if vehicle is created successfully
         public async Task<bool> CreateCar(Car newCar) //create a new car and add it to the dbfile
@@ -38,7 +44,7 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
             {
                 vehicleIdHandler.AddId();   
                 carList.Add(newCar);
-                File.WriteAllText(Data.carJSONPath, JsonConvert.SerializeObject(carList));
+                await SaveCarData(carList);
                 return true;
             }
         }
@@ -58,7 +64,7 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
             {
                 vehicleIdHandler.AddId();
                 motorcyclesList.Add(newMotorcycle);
-                File.WriteAllText(Data.motorcycleJSONPath, JsonConvert.SerializeObject(motorcyclesList));
+                await SaveMotorcycleData(motorcyclesList);
                 return true;
             }
         }
@@ -77,11 +83,43 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
             {
                 vehicleIdHandler.AddId();
                 truckList.Add(newTruck);
-                File.WriteAllText(Data.truckJSONPath, JsonConvert.SerializeObject(truckList));
+                await SaveTruckData(truckList);
                 return true;
             }
         }
 
-        //TODO: Edit and delete methods. 
+        public async Task<bool> DeleteVehicle(int vehicleId) //search for vehicle in data files by given id and delete it
+        {
+            List<Car> carData = await GetCars(); //searches for vehicle in carlist by id
+            Car? car = carData.Find(veh => veh.id == vehicleId);
+            if (car is not null) //delete car from list if it's found
+            {
+                carData.Remove(car);
+                await SaveCarData(carData);
+                return true;
+            }
+
+            List<Truck> truckData = await GetTrucks(); //searches for vehicle in trucklist by id
+            Truck? truck = truckData.Find(veh => veh.id == vehicleId);
+            if (truck is not null) //delete truck from list if it's found
+            {
+                truckData.Remove(truck);
+                await SaveTruckData(truckData);
+                return true;
+            }
+         
+            List<Motorcycle> motorcycleData = await GetMotorcycles(); //searches for vehicle in motorcyclelist by id
+            Motorcycle? motorcycle = motorcycleData.Find(veh => veh.id == vehicleId);
+            if (motorcycle is not null) //delete motorcycle from list if it's found
+            {
+                motorcycleData.Remove(motorcycle);
+                await SaveMotorcycleData(motorcycleData);
+                return true;
+            }
+                
+            else return false;
+        }
+
+        //TODO: Edit methods. 
     }
 }
