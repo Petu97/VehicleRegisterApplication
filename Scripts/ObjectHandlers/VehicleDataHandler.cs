@@ -121,5 +121,18 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
         }
 
         //TODO: Edit methods. 
+
+        public async Task<bool> EditCar(Car editedCar)
+        {
+            List<Car> carData = await GetCars(); //searches for vehicle in carlist by id
+            Car? car = carData.Find(veh => veh.id == editedCar.id);
+            if (car is not null)
+            {
+                car = editedCar;
+                await SaveCarData(carData);
+                return true;
+            }
+            else return false;
+        }
     }
 }

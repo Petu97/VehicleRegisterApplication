@@ -34,6 +34,29 @@ namespace VehicleRegisterApplication.Controllers
         }
 
         [HttpGet]
+        [Route("Vehicle/EditVehicle")]
+        public async Task<IActionResult> EditVehicle(int id)
+        {
+            List<Car>? carData = await vehicleDataHandler.GetCars(); //searches for vehicle with given id from car data
+            Car? car = carData.Find(veh => veh.id == id);
+            if (car is not null)
+                return View("EditCar",car);
+
+            List<Truck>? truckData = await vehicleDataHandler.GetTrucks(); //searches for vehicle with given id from truck data
+            Truck? truck = truckData.Find(veh => veh.id == id);
+            if (truck is not null)
+                return View("EditTruck", truck);
+
+            List<Motorcycle>? motorcycleData = await vehicleDataHandler.GetMotorcycles(); //searches for vehicle with given id from truck data
+            Motorcycle? motorcycle = motorcycleData.Find(veh => veh.id == id);
+            if (motorcycle is not null)
+                return View("EditMotorcycle", motorcycle);
+
+            else
+                return NotFound(); //return vehicle not found
+        }
+
+        [HttpGet]
         [Route("Vehicle/CreateCar")]
         public async Task<IActionResult> CreateCar()
         {
