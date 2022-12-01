@@ -1,0 +1,39 @@
+﻿@model VehicleRegisterApplication.Models.Motorcycle
+@{
+    ViewData["Title"] = "Edit motorcycle";
+}
+
+<p>Vehicle type: @Model.GetType().Name</p>
+<p>Vehicle id: @Model.id</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditMotorcycle">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="vehicleBrand" class="control-label"></label>
+                <input asp-for="vehicleBrand" class="form-control" placeholder="@Html.DisplayFor(model => model.vehicleBrand)" />
+                <span asp-validation-for="vehicleBrand" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="vehicleModel" class="control-label"></label>
+                <input asp-for="vehicleModel" class="form-control" placeholder=" @Html.DisplayNameFor(model => model.vehicleModel)" />
+                <span asp-validation-for="vehicleModel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="lisencePlateNumber" class="control-label"></label>
+                <input asp-for="lisencePlateNumber" class="form-control" placeholder="@Html.DisplayFor(model => model.lisencePlateNumber)" />
+                <span asp-validation-for="lisencePlateNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="owner" class="control-label"></label>
+                <input asp-for="owner" class="form-control" placeholder=" @Html.DisplayNameFor(model => model.owner)" />
+                <span asp-validation-for="owner" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
