@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.numOfWheels)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit", "EditVehicle", "Vehicle", new { id=item.id }) |
+                @Html.ActionLink("Details", "VehicleInfo", "Vehicle", new { id=item.id }) |
+                @Html.ActionLink("Delete", "DeleteVehicle", "Vehicle", new { id=item.id })
             </td>
         </tr>
 }
