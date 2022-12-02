@@ -121,15 +121,44 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
         }
 
         //TODO: Edit methods. 
-
-        public async Task<bool> EditCar(Car editedCar)
+        public async Task<bool> EditCar(int id, Car editedCar)
         {
             List<Car> carData = await GetCars(); //searches for vehicle in carlist by id
-            Car? car = carData.Find(veh => veh.id == editedCar.id);
-            if (car is not null)
+            if (editedCar is not null)
             {
-                car = editedCar;
+                editedCar.id = id;
+                editedCar.numOfWheels = 4;
+                carData[carData.FindIndex(veh => veh.id == id)] = editedCar;
                 await SaveCarData(carData);
+                return true;
+            }
+            else return false;
+        }
+
+        public async Task<bool> EditMotorcycle(int id, Motorcycle editedMotorcycle) //todo: as i learned today motorcycles can have 3 wheels, refactor
+        {
+            List<Motorcycle> motorcycleData = await GetMotorcycles(); 
+            if (editedMotorcycle is not null)
+            {
+                if (editedMotorcycle.numOfWheels < 2)
+                    editedMotorcycle.numOfWheels = 2;
+                
+                editedMotorcycle.id = id;
+                motorcycleData[motorcycleData.FindIndex(veh => veh.id == id)] = editedMotorcycle;
+                await SaveMotorcycleData(motorcycleData);
+                return true;
+            }
+            else return false;
+        }
+
+        public async Task<bool> EditTruck(int id, Truck editedTruck)
+        {
+            List<Truck> truckData = await GetTrucks(); 
+            if (editedTruck is not null)
+            {
+                editedTruck.id = id;
+                truckData[truckData.FindIndex(veh => veh.id == id)] = editedTruck;
+                await SaveTruckData(truckData);
                 return true;
             }
             else return false;

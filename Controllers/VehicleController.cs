@@ -40,7 +40,7 @@ namespace VehicleRegisterApplication.Controllers
             List<Car>? carData = await vehicleDataHandler.GetCars(); //searches for vehicle with given id from car data
             Car? car = carData.Find(veh => veh.id == id);
             if (car is not null)
-                return View("EditCar",car);
+                return View("EditCar", car);
 
             List<Truck>? truckData = await vehicleDataHandler.GetTrucks(); //searches for vehicle with given id from truck data
             Truck? truck = truckData.Find(veh => veh.id == id);
@@ -56,6 +56,35 @@ namespace VehicleRegisterApplication.Controllers
                 return NotFound(); //return vehicle not found
         }
 
+        [HttpPost]
+        [Route("Vehicle/EditCar")]
+        public async Task<IActionResult> EditCar(int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Car updatedCar)
+        {
+            var result = await vehicleDataHandler.EditCar(id, updatedCar);
+            if (result) return View("Index");
+
+            else return NotFound();
+        }
+
+        [HttpPost]
+        [Route("Vehicle/EditMotorcycle")]
+        public async Task<IActionResult> EditMotorcycle (int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Motorcycle updatedMotorcycle)
+        {
+            var result = await vehicleDataHandler.EditMotorcycle(id, updatedMotorcycle);
+            if (result) return View("Index");
+
+            else return NotFound();
+        }
+
+        [HttpPost]
+        [Route("Vehicle/EditTruck")]
+        public async Task<IActionResult> EditTruck(int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner,numOfWheels,truckType,cargoCapacity")] Truck updatedTruck)
+        {
+            var result = await vehicleDataHandler.EditTruck(id, updatedTruck);
+            if (result) return View("Index");
+
+            else return NotFound();
+        }
         [HttpGet]
         [Route("Vehicle/CreateCar")]
         public async Task<IActionResult> CreateCar()
@@ -65,7 +94,7 @@ namespace VehicleRegisterApplication.Controllers
 
         [HttpPost]
         // [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCar([Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Car car) 
+        public async Task<IActionResult> CreateCar([Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Car car)
         {
 
             try
