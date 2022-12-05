@@ -3,7 +3,9 @@
     ViewData["Title"] = "Vehicle with id of "; 
 }
 @*need some method if returntype is car/motorcycle/truck*@
-<p>Hello from our View Template!</p>
+
+
+<p>Vehicle type: @Model.GetType().Name</p>
 
 <div>
     <h4>Movie</h4>
@@ -27,5 +29,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.numOfWheels)
         </dd>
+
+        @if(Model is Truck)
+        {
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => ((Truck) model).truckType)
+            </dd>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => ((Truck) model).cargoCapacity)
+            </dd>
+        }
     </dl>
 </div>
