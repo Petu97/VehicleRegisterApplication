@@ -1,9 +1,22 @@
 ﻿@model VehicleRegisterApplication.Models.Vehicle
 @{
-    ViewData["Title"] = "Vehicle with id of "; 
+    ViewData["Title"] = "Vehicle with id of ";
 }
 @*need some method if returntype is car/motorcycle/truck*@
 
+
+@if (Model is Car)
+{
+    <a asp-action="Cars" class="btn btn-primary">Return</a>
+}
+else if (Model is Motorcycle)
+{
+        <a asp-action="Motorcycles" class="btn btn-primary">Return</a>
+}
+else if (Model is Truck)
+{
+        <a asp-action="Trucks" class="btn btn-primary">Return</a>
+}
 
 
 <div>
@@ -46,7 +59,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.owner)
         </dd>
-        @if(Model is Truck)
+        @if (Model is Truck)
         {
             <dt class="col-sm-2">
                 Truck type
