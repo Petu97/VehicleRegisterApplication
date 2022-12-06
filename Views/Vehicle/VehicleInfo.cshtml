@@ -5,36 +5,58 @@
 @*need some method if returntype is car/motorcycle/truck*@
 
 
-<p>Vehicle type: @Model.GetType().Name</p>
 
 <div>
-    <h4>Movie</h4>
+    <h4>Vehicle type: @Model.GetType().Name</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.id)
+            Vehicle id
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.id)
+        </dd>
+        <dt class="col-sm-2">
+            Vehicle brand
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.vehicleBrand)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.vehicleModel)
+            Vehicle model
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.vehicleModel)
+        </dd>
+        <dt class="col-sm-2">
+            Number of wheels
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.numOfWheels)
+        </dd>
+        <dt class="col-sm-2">
+            Register plate
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.lisencePlateNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.owner)
+            Vehicle owner
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.numOfWheels)
+            @Html.DisplayFor(model => model.owner)
         </dd>
-
         @if(Model is Truck)
         {
+            <dt class="col-sm-2">
+                Truck type
+            </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => ((Truck) model).truckType)
             </dd>
+            <dt class="col-sm-2">
+                Cargo capacity (m³)
+            </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => ((Truck) model).cargoCapacity)
             </dd>
