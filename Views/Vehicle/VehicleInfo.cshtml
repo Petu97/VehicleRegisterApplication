@@ -2,22 +2,8 @@
 @{
     ViewData["Title"] = "Vehicle with id of ";
 }
-@*need some method if returntype is car/motorcycle/truck*@
-
-
-@if (Model is Car)
-{
-    <a asp-action="Cars" class="btn btn-primary">Return</a>
-}
-else if (Model is Motorcycle)
-{
-        <a asp-action="Motorcycles" class="btn btn-primary">Return</a>
-}
-else if (Model is Truck)
-{
-        <a asp-action="Trucks" class="btn btn-primary">Return</a>
-}
-
+@*This is kind of hacky way to do this (moves user to list of objects of type, methods "cars", "motorcycles" and "trucks" <- hence the "s" at the end)*@
+<a asp-action=@(Model.GetType().Name + "s") class="btn btn-primary">Return to list</a>
 
 <div>
     <h4>Vehicle type: @Model.GetType().Name</h4>
