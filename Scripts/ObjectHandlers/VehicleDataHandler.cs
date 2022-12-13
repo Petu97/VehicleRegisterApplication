@@ -120,27 +120,26 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
             else return false;
         }
 
-        //TODO: Edit methods. 
-        public async Task<bool> EditCar(int id, Car editedCar)
+        public async Task<bool> EditCar(int id, Car editedCar) //fetches a car from the data and replaces it with car given as parameter
         {
-            List<Car> carData = await GetCars(); //searches for vehicle in carlist by id
+            List<Car> carData = await GetCars(); 
             if (editedCar is not null)
             {
                 editedCar.id = id;
-                editedCar.numOfWheels = 4;
-                carData[carData.FindIndex(veh => veh.id == id)] = editedCar;
+                editedCar.numOfWheels = 4; //cars have 4 wheenls. TIL right?
+                carData[carData.FindIndex(veh => veh.id == id)] = editedCar; //replaces vehicle with new one
                 await SaveCarData(carData);
                 return true;
             }
             else return false;
         }
 
-        public async Task<bool> EditMotorcycle(int id, Motorcycle editedMotorcycle) //todo: as i learned today motorcycles can have 3 wheels, refactor
+        public async Task<bool> EditMotorcycle(int id, Motorcycle editedMotorcycle) //fetches a motorcycle from the data and replaces it with motorcycle given as parameter
         {
             List<Motorcycle> motorcycleData = await GetMotorcycles(); 
             if (editedMotorcycle is not null)
             {
-                if (editedMotorcycle.numOfWheels < 2)
+                if (editedMotorcycle.numOfWheels is < 2 or > 3) //motorcycles have 2 or 3 wheels
                     editedMotorcycle.numOfWheels = 2;
                 
                 editedMotorcycle.id = id;
@@ -151,7 +150,7 @@ namespace VehicleRegisterApplication.Scripts.ObjectHandlers
             else return false;
         }
 
-        public async Task<bool> EditTruck(int id, Truck editedTruck)
+        public async Task<bool> EditTruck(int id, Truck editedTruck) //fetches a truck from the data and replaces it with truck given as parameter
         {
             List<Truck> truckData = await GetTrucks(); 
             if (editedTruck is not null)
