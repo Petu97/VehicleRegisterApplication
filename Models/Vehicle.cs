@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VehicleRegisterApplication.Models
 {
-    public class Vehicle
+    public abstract class Vehicle
     {
         [JsonProperty("id")]
         public int id { get; set; }

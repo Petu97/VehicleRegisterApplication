@@ -2,6 +2,9 @@
 {
     public class Car : Vehicle
     {
-        //waow such a modular class, absolutely fantastic
+        public Car()
+        {
+            numOfWheels = 4; //cars have 4 wheels
+        }
     }
 }
