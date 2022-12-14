@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using VehicleRegisterApplication.Scripts.ObjectHandlers;
 using VehicleRegisterApplication.Scripts;
 using System.Threading.Tasks;
-
+using System.Configuration;
 
 namespace VehicleRegisterApplication.Controllers
 {
@@ -35,7 +35,7 @@ namespace VehicleRegisterApplication.Controllers
 
         [HttpGet]
         [Route("Vehicle/EditVehicle")]
-        public async Task<IActionResult> EditVehicle(int id)
+        public async Task<IActionResult> EditVehicle(int id) //edit vehicle method. Can only pass a single model to any given view so each type of edit viwe is different. Wish these could be fused together in one view
         {
             List<Car>? carData = await vehicleDataHandler.GetCars(); //searches for vehicle with given id from car data
             Car? car = carData.Find(veh => veh.id == id);
@@ -60,6 +60,9 @@ namespace VehicleRegisterApplication.Controllers
         [Route("Vehicle/EditCar")]
         public async Task<IActionResult> EditCar(int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Car updatedCar)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var result = await vehicleDataHandler.EditCar(id, updatedCar);
             if (result) return View("Index");
 
@@ -68,8 +71,11 @@ namespace VehicleRegisterApplication.Controllers
 
         [HttpPost]
         [Route("Vehicle/EditMotorcycle")]
-        public async Task<IActionResult> EditMotorcycle (int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Motorcycle updatedMotorcycle)
+        public async Task<IActionResult> EditMotorcycle(int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Motorcycle updatedMotorcycle)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var result = await vehicleDataHandler.EditMotorcycle(id, updatedMotorcycle);
             if (result) return View("Index");
 
@@ -80,11 +86,15 @@ namespace VehicleRegisterApplication.Controllers
         [Route("Vehicle/EditTruck")]
         public async Task<IActionResult> EditTruck(int id, [Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner,numOfWheels,truckType,cargoCapacity")] Truck updatedTruck)
         {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
             var result = await vehicleDataHandler.EditTruck(id, updatedTruck);
             if (result) return View("Index");
 
             else return NotFound();
         }
+
         [HttpGet]
         [Route("Vehicle/CreateCar")]
         public async Task<IActionResult> CreateCar()
@@ -96,16 +106,16 @@ namespace VehicleRegisterApplication.Controllers
         // [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCar([Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Car car)
         {
-
-            try
+            if (ModelState.IsValid)
             {
-                vehicleDataHandler.CreateCar(car);
-                return RedirectToAction("Index");
+                var result = await vehicleDataHandler.CreateCar(car);
+                if (result)
+                    return CreatedAtAction("Car created successfully", car); //code 201 created at action
+                else
+                    return StatusCode(500, "Server error: failed to fetch truckdata"); //error: 500. internal server error
             }
-            catch
-            {
-                return NotFound();
-            }
+            else
+                return BadRequest("User input not valid. Check input for any forbidden characters"); //error 400. Bad request
         }
 
         [HttpGet]
@@ -127,7 +137,7 @@ namespace VehicleRegisterApplication.Controllers
             }
             catch
             {
-                return NotFound();
+                return Content("");
             }
         }
 
@@ -163,7 +173,7 @@ namespace VehicleRegisterApplication.Controllers
             List<Car> vehicleData = await vehicleDataHandler.GetCars();
             if (vehicleData is not null) return View(vehicleData);
 
-            else return NotFound();
+            else return StatusCode(500, "Server error: failed to fetch cardata"); //error: 500. internal server error
         }
 
         [HttpGet]
@@ -173,7 +183,7 @@ namespace VehicleRegisterApplication.Controllers
             List<Truck> vehicleData = await vehicleDataHandler.GetTrucks();
             if (vehicleData is not null) return View(vehicleData);
 
-            else return NotFound();
+            else return StatusCode(500, "Server error: failed to fetch truckdata"); //error: 500. internal server error
         }
 
         [HttpGet]
@@ -183,13 +193,16 @@ namespace VehicleRegisterApplication.Controllers
             List<Motorcycle> vehicleData = await vehicleDataHandler.GetMotorcycles();
             if (vehicleData is not null) return View(vehicleData);
 
-            else return NotFound();
+            else return StatusCode(500, "Server error: failed to fetch motorcycledata"); //error: 500. internal server error
         }
 
-
+        [HttpGet]
         [Route("Vehicle/VehicleInfo/{id?}")]
         public async Task<IActionResult> VehicleInfo(int? id) //searches and returns specific vehicledata to client. This method is obviously inefficient and dum because we're not working with a proper db.
         {
+            if (id is not int)
+                BadRequest();
+
             List<Car>? carData = await vehicleDataHandler.GetCars(); //searches for vehicle with given id from car data
             Car? car = carData.Find(veh => veh.id == id);
             if (car is not null)
@@ -206,7 +219,7 @@ namespace VehicleRegisterApplication.Controllers
                 return View(motorcycle);
 
             else
-                return NotFound(); //return vehicle not found
+                return NotFound("Sorry, couldn't find any item with id of: " + id); //return vehicle not found error, error: 404
         }
     }
 }
