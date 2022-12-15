@@ -6,6 +6,7 @@ using VehicleRegisterApplication.Scripts.ObjectHandlers;
 using VehicleRegisterApplication.Scripts;
 using System.Threading.Tasks;
 using System.Configuration;
+using System.Runtime.ConstrainedExecution;
 
 namespace VehicleRegisterApplication.Controllers
 {
@@ -112,7 +113,7 @@ namespace VehicleRegisterApplication.Controllers
                 if (result)
                     return CreatedAtAction("Car created successfully", car); //code 201 created at action
                 else
-                    return StatusCode(500, "Server error: failed to fetch truckdata"); //error: 500. internal server error
+                    return StatusCode(500, "Server error: failed to fetch cardata"); //error: 500. internal server error
             }
             else
                 return BadRequest("User input not valid. Check input for any forbidden characters"); //error 400. Bad request
@@ -129,16 +130,16 @@ namespace VehicleRegisterApplication.Controllers
         // [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateMotorcycle([Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner")] Motorcycle motorcycle)
         {
-
-            try
+            if (ModelState.IsValid)
             {
-                vehicleDataHandler.CreateMotorcycle(motorcycle);
-                return RedirectToAction("Index");
+                var result = await vehicleDataHandler.CreateMotorcycle(motorcycle);
+                if (result)
+                    return CreatedAtAction("Motorctcle created successfully", motorcycle); //code 201 created at action
+                else
+                    return StatusCode(500, "Server error: failed to fetch motorcycledata"); //error: 500. internal server error
             }
-            catch
-            {
-                return Content("");
-            }
+            else
+                return BadRequest("User input not valid. Check input for any forbidden characters"); //error 400. Bad request
         }
 
         [HttpGet]
@@ -152,16 +153,16 @@ namespace VehicleRegisterApplication.Controllers
         // [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTruck([Bind("vehicleBrand,vehicleModel,lisencePlateNumber,owner,numOfWheels,truckType,cargoCapacity")] Truck truck)
         {
-
-            try
+            if (ModelState.IsValid)
             {
-                vehicleDataHandler.CreateTruck(truck);
-                return RedirectToAction("Index");
+                var result = await vehicleDataHandler.CreateTruck(truck);
+                if (result)
+                    return CreatedAtAction("Truck created successfully", truck); //code 201 created at action
+                else
+                    return StatusCode(500, "Server error: failed to fetch truckdata"); //error: 500. internal server error
             }
-            catch
-            {
-                return NotFound();
-            }
+            else
+                return BadRequest("User input not valid. Check input for any forbidden characters"); //error 400. Bad request
         }
 
         /* methods for printing out list of vehicles of type
