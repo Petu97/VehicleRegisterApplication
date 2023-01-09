@@ -54,7 +54,7 @@ namespace VehicleRegisterApplication.Controllers
                 return View("EditMotorcycle", motorcycle);
 
             else
-                return NotFound(); //return vehicle not found
+                return NotFound("Error: failed to find vehicle with given id"); //return vehicle not found
         }
 
         [HttpPost]
